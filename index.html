@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifact - AI Powered News Verification Platform</title>
+    <meta name="description" content="Welcome to Verifact!">
+    <!-- Link to your compiled Tailwind CSS file -->
+    <link href="src/output.css" rel="stylesheet">
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      /* For the HowItWorks connecting line */
+      .desktop-connecting-line::before {
+        content: '';
+        position: absolute;
+        top: 2rem; /* Matches the icon container's top position roughly */
+        left: calc(16.66% + 2rem); /* (100% / 3 sections / 2) + icon width / 2 approx */
+        right: calc(16.66% + 2rem);
+        height: 2px; /* 0.5 * 4px = 2px for h-0.5 */
+        background-color: #cbd5e1; /* slate-300 */
+        opacity: 0.7;
+        z-index: 0; /* Behind the icons */
+      }
+      @media (max-width: 767px) { /* md breakpoint */
+        .desktop-connecting-line::before {
+          display: none;
+        }
+      }
+    </style>
+</head>
+<body class="font-['Inter','Noto_Sans',sans-serif]">
+
+    <div class="relative flex min-h-screen flex-col bg-slate-50 overflow-x-hidden">
+        <!-- Header Component -->
+        <header id="page-header" class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-transparent border-b border-transparent">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sticky top-0 z-50">
+                <div class="flex items-center justify-between h-16 md:h-20">
+                    <!-- Logo and Verifact -->
+                    <div class="flex items-center">
+                        <a href="chat.html" class="flex-shrink-0 flex items-center gap-2 group">
+                            <img class="h-8 w-auto sm:h-9" src="assets/verifact-logo.png" alt="Verifact Logo" />
+                            <span class="text-xl sm:text-2xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+                                Verifact
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- Desktop Navigation (Hidden on Mobile) -->
+                    <nav class="hidden md:flex md:items-center md:space-x-8 lg:space-x-10">
+                        <a href="#how-it-works" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
+                        <a href="#reason" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Why Us?</a>
+                        <a href="#contact" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Contact</a>
+                        <a href="chat.html" class="inline-flex items-center justify-center rounded-lg h-10 px-5 bg-blue-600 text-white font-semibold text-sm shadow-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Get Started
+                        </a>
+                    </nav>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <!-- Bars3Icon -->
+                            <svg id="icon-bars" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                            <!-- XMarkIcon (hidden by default) -->
+                            <svg id="icon-xmark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu, show/hide based on menu state. -->
+            <div class="hidden md:hidden absolute top-full left-0 right-0 bg-white shadow-lg pb-4" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#how-it-works" class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600 transition-colors">How It Works</a>
+                    <a href="#reason" class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600 transition-colors">Why Us?</a>
+                    <a href="#contact" class="mobile-menu-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-blue-600 transition-colors">Contact</a>
+                </div>
+                <div class="pt-3 pb-2 px-4 border-t border-slate-200">
+                    <a href="chat.html" class="mobile-menu-link block w-full text-center rounded-lg py-2.5 px-4 bg-blue-600 text-white font-semibold text-sm shadow-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Verify a Claim
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- HeroSection Component -->
+        <div class="relative bg-gradient-to-br from-slate-50 via-sky-50 to-blue-100 overflow-hidden">
+            <div class="absolute top-0 left-0 transform -translate-x-1/4 -translate-y-1/4">
+                <div class="w-96 h-96 bg-sky-200/30 rounded-full filter blur-3xl opacity-70"></div>
+            </div>
+            <div class="absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4">
+                <div class="w-80 h-80 bg-blue-300/30 rounded-full filter blur-3xl opacity-70"></div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl">
+                        <span class="block">Uncover Truth.</span>
+                        <span class="block text-blue-600">
+                            Instantly Verify Information.
+                        </span>
+                    </h1>
+                    <p class="mt-6 max-w-md mx-auto text-lg text-slate-600 sm:text-xl md:mt-8 md:max-w-2xl">
+                        Verifact empowers you with fast, AI-driven fact-checking. Cut
+                        through the noise and access reliable insights from trusted sources
+                        in seconds.
+                    </p>
+                    <div class="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
+                        <div class="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-1 sm:gap-5 md:flex-row md:gap-3 sm:flex-row sm:items-center">
+                            <a href="./pages/chat.html" class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-semibold rounded-lg shadow-lg text-white bg-blue-600 hover:bg-blue-700 transition-transform duration-150 ease-in-out hover:scale-105 md:py-4 md:text-lg md:px-10">
+                                Verify a Claim Now
+                            </a>
+                            <a href="#how-it-works" id="learn-more-button" class="flex items-center justify-center px-8 py-3 border border-blue-600 text-base font-semibold rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-transform duration-150 ease-in-out hover:scale-105 md:py-4 md:text-lg md:px-10">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 -mb-16 sm:-mb-48 lg:m-0 lg:relative">
+                    <div class="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 lg:max-w-none lg:px-0">
+                        <img class="w-full lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-auto lg:max-w-none opacity-90" src="assets/verifact-image.png" alt="Verifact application mockup or illustrative graphic" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Component -->
+        <div class="py-20 px-6 bg-slate-50" id="reason">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold text-slate-900 text-center mb-16">
+                    Why Use Verifact?
+                </h2>
+                <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Card 1: Fast & Accurate -->
+                    <div class="p-8 bg-white rounded-xl shadow-lg text-center transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105">
+                        <!-- CheckBadgeIcon Solid -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 text-blue-600 mx-auto mb-5">
+                            <path fill-rule="evenodd" d="M8.603 3.799A4.5 4.5 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.5 4.5 0 013.498 1.307 4.5 4.5 0 01.502 3.595A4.5 4.5 0 0118.25 12c0 .618-.122 1.218-.355 1.766a4.5 4.5 0 01-.861 1.43L16.5 15.5l-1.503 1.503a4.5 4.5 0 01-2.056 1.111A4.5 4.5 0 0112 19.5c-.918 0-1.797-.276-2.503-.766A4.5 4.5 0 017.75 16.503l1.503-1.503L7.5 13.234a4.5 4.5 0 01-.861-1.43A4.5 4.5 0 016.25 12c0-1.357.6-2.573 1.549-3.397a4.5 4.5 0 011.307-3.498A4.5 4.5 0 018.603 3.799zM10.373 12.182a.75.75 0 00-1.06 1.061l1.5 1.5a.75.75 0 001.134-.072l3-3.75a.75.75 0 00-1.134-.908L11.25 12.44l-.877-.878z" clip-rule="evenodd" />
+                        </svg>
+                        <h3 class="font-semibold text-xl text-slate-800 mb-3">Fast & Accurate</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">Get instant feedback on claims with meticulously vetted sources.</p>
+                    </div>
+                    <!-- Card 2: AI-Powered -->
+                    <div class="p-8 bg-white rounded-xl shadow-lg text-center transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105">
+                        <!-- CpuChipIcon Solid -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 text-green-600 mx-auto mb-5">
+                           <path fill-rule="evenodd" d="M14.25 2.25c-.243 0-.482.035-.712.101V2.25a.75.75 0 00-1.5 0v.101A5.235 5.235 0 0012 2.25c-.243 0-.482.035-.712.101V2.25a.75.75 0 00-1.5 0v.101A5.235 5.235 0 009.75 2.25c-.243 0-.482.035-.712.101V2.25a.75.75 0 00-1.5 0v.101A5.235 5.235 0 007.5 2.25c-.243 0-.482.035-.712.101V2.25a.75.75 0 00-1.5 0v.101A5.235 5.235 0 005.25 2.25c-.243 0-.482.035-.712.101V2.25a.75.75 0 00-1.5 0v.101A5.25 5.25 0 003 7.5v9a5.25 5.25 0 004.5 5.149V21.75a.75.75 0 001.5 0v-.101c.23.066.469.101.712.101s.482-.035.712-.101V21.75a.75.75 0 001.5 0v-.101c.23.066.469.101.712.101s.482-.035.712-.101V21.75a.75.75 0 001.5 0v-.101c.23.066.469.101.712.101s.482-.035.712-.101V21.75a.75.75 0 001.5 0v-.101A5.25 5.25 0 0021 16.5v-9A5.25 5.25 0 0016.5 2.351V2.25a.75.75 0 00-1.5 0v.101c-.23.066-.469.101-.712.101zM7.604 4.35v-.002c.003-.15.006-.3.01-.448h.002a.75.75 0 01.741-.652c.021.003.042.005.063.007h.002c.015.003.03.005.045.007L9 3.25l.002.012.002.012c.023.012.047.022.07.033l.001.005.002.005a.75.75 0 01.523.686v.002c.003.075.005.15.005.225a.75.75 0 01-.75.75h-1.5a.75.75 0 01-.75-.75c0-.075.002-.15.005-.225zm4.5 0v-.002c.003-.15.006-.3.01-.448h.002a.75.75 0 01.741-.652c.021.003.042.005.063.007h.002c.015.003.03.005.045.007L13.5 3.25l.002.012.002.012c.023.012.047.022.07.033l.001.005.002.005a.75.75 0 01.523.686v.002c.003.075.005.15.005.225a.75.75 0 01-.75.75h-1.5a.75.75 0 01-.75-.75c0-.075.002-.15.005-.225zm4.5 0v-.002c.003-.15.006-.3.01-.448h.002a.75.75 0 01.741-.652c.021.003.042.005.063.007h.002c.015.003.03.005.045.007L18 3.25l.002.012.002.012c.023.012.047.022.07.033l.001.005.002.005a.75.75 0 01.523.686v.002c.003.075.005.15.005.225a.75.75 0 01-.75.75h-1.5a.75.75 0 01-.75-.75c0-.075.002-.15.005-.225zm1.437 15.002c-.003.026-.007.052-.01.077v.002a.75.75 0 01-.744.65h-.001a.747.747 0 01-.08-.006l-.002-.001-.002-.001L16.5 20l-.002-.012-.002-.012a.752.752 0 01-.07-.033l-.001-.005-.002-.005a.75.75 0 01-.523-.686v-.002c-.003-.075-.005-.15-.005-.225a.75.75 0 01.75-.75h1.5a.75.75 0 01.75.75c0 .075-.002.15-.005.225zm-4.5 0c-.003.026-.007.052-.01.077v.002a.75.75 0 01-.744.65h-.001a.747.747 0 01-.08-.006l-.002-.001-.002-.001L12 20l-.002-.012-.002-.012a.752.752 0 01-.07-.033l-.001-.005-.002-.005a.75.75 0 01-.523-.686v-.002c-.003-.075-.005-.15-.005-.225a.75.75 0 01.75-.75h1.5a.75.75 0 01.75.75c0 .075-.002.15-.005.225zm-4.5 0c-.003.026-.007.052-.01.077v.002a.75.75 0 01-.744.65h-.001a.747.747 0 01-.08-.006l-.002-.001-.002-.001L7.5 20l-.002-.012-.002-.012a.752.752 0 01-.07-.033l-.001-.005-.002-.005a.75.75 0 01-.523-.686v-.002c-.003-.075-.005-.15-.005-.225a.75.75 0 01.75-.75h1.5a.75.75 0 01.75.75c0 .075-.002.15-.005.225zM9.25 11.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5zm4.5 0a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z" clip-rule="evenodd" /><path d="M7.5 7.75A.75.75 0 018.25 7h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 017.5 7.75zm4.5 0A.75.75 0 0112.75 7h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm-6.75 3A.75.75 0 006 11.5v1.5a.75.75 0 001.5 0v-1.5A.75.75 0 006.75 10.75zm10.5 0a.75.75 0 00-.75.75v1.5a.75.75 0 001.5 0v-1.5a.75.75 0 00-.75-.75zm-3.75 3A.75.75 0 0114.25 15h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm-4.5 0A.75.75 0 019.75 15h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 019.75 15.75z" /></svg>
+                        <h3 class="font-semibold text-xl text-slate-800 mb-3">AI-Powered</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">Advanced AI cross-references data across news, reports, journals & more.</p>
+                    </div>
+                    <!-- Card 3: Built for Everyone -->
+                    <div class="p-8 bg-white rounded-xl shadow-lg text-center transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105">
+                        <!-- UsersIcon Solid (using a common 'users group' representation) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 text-purple-600 mx-auto mb-5">
+                           <path d="M15 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0118 15v3h-2zM4.75 12.094A5.973 5.973 0 004 15v3H2v-3a3.005 3.005 0 012.25-2.906z" />
+                        </svg>
+                        <h3 class="font-semibold text-xl text-slate-800 mb-3">Built for Everyone</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">Whether you're a student, journalist, researcher, or just curious — it's for you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HowItWorksSection Component -->
+        <div class="bg-slate-50 py-16 sm:py-24" id="how-it-works">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="text-base font-semibold text-blue-600 tracking-wide uppercase">
+                        Simple & Effective
+                    </h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                        How Verifact Works
+                    </p>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">
+                        Understanding the truth behind any claim is just three simple steps away.
+                    </p>
+                </div>
+
+                <div class="relative">
+                    <!-- Desktop connecting line (drawn behind the cards) -->
+                    <div aria-hidden="true" class="hidden md:block absolute top-0 left-0 right-0 h-0.5 bg-slate-300/70 desktop-connecting-line" style="top: 2rem; z-index: 0;"></div>
+
+                    <div class="grid grid-cols-1 gap-y-16 md:grid-cols-3 md:gap-x-8 relative">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative z-10">
+                                <span class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 shadow-lg border-4 border-slate-50">
+                                    <!-- ClipboardDocumentCheckIcon Outline -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-blue-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="mt-6 text-xs font-bold text-slate-400 tracking-wider">STEP 01</div>
+                            <h3 class="mt-1 text-xl font-semibold text-slate-800">Submit Your Claim</h3>
+                            <p class="mt-2 text-sm text-slate-600 leading-relaxed">Easily paste text, upload a document, or enter a URL. Verifact accepts various input formats to start the verification process.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative z-10">
+                                <span class="flex items-center justify-center h-16 w-16 rounded-full bg-green-100 shadow-lg border-4 border-slate-50">
+                                    <!-- CpuChipIcon Outline -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-green-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-7.5h10.5a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 8.25v7.5A2.25 2.25 0 006.75 18h10.5M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="mt-6 text-xs font-bold text-slate-400 tracking-wider">STEP 02</div>
+                            <h3 class="mt-1 text-xl font-semibold text-slate-800">AI-Powered Analysis</h3>
+                            <p class="mt-2 text-sm text-slate-600 leading-relaxed">Our advanced AI meticulously cross-references your claim against a vast database of news articles, academic papers, and verified reports.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center text-center">
+                            <div class="relative z-10">
+                                <span class="flex items-center justify-center h-16 w-16 rounded-full bg-purple-100 shadow-lg border-4 border-slate-50">
+                                    <!-- CheckBadgeIcon Outline -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-purple-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.747 3.747 0 01-1.043 3.296 3.747 3.747 0 01-3.296 1.043A3.747 3.747 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="mt-6 text-xs font-bold text-slate-400 tracking-wider">STEP 03</div>
+                            <h3 class="mt-1 text-xl font-semibold text-slate-800">Receive Clear Results</h3>
+                            <p class="mt-2 text-sm text-slate-600 leading-relaxed">Get a straightforward verdict—verified, disputed, or unconfirmed—along with supporting evidence and source links for full transparency.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Component -->
+        <footer class="bg-slate-900 text-slate-300" id="contact">
+            <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+                <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                    <div class="space-y-8 xl:col-span-1">
+                        <a href="index.html" class="text-3xl font-bold text-white hover:text-sky-400 transition-colors">
+                            Verifact
+                        </a>
+                        <p class="text-slate-400 text-base">
+                            Empowering you with verified information, instantly.
+                        </p>
+                        <div class="flex space-x-5">
+                            <!-- Twitter -->
+                            <a href="https://twitter.com/yourprofile" class="text-slate-400 hover:text-sky-400 transition-colors" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">Twitter</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="h-6 w-6" fill="currentColor"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                            </a>
+                            <!-- GitHub -->
+                            <a href="https://github.com/organizations/Bit-Nomads" class="text-slate-400 hover:text-sky-400 transition-colors" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">GitHub</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="h-6 w-6" fill="currentColor"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.3zm17.4 3c-2.1 1.1-3.3 3.3-2.6 5.6s2.3 4 4.9 4c2.1-1.1 3.3-3.3 2.6-5.6s-2.3-4-4.9-4zm25.7 6.1c-1.4 1.1-2.3 3.3-1.2 5.3s3.3 3.3 5.6 2.3c1.4-1.1 2.3-3.3 1.2-5.3s-3.2-3.3-5.6-2.3zM496 256c0 137-111 248-248 248S0 393 0 256S111 8 248 8s248 111 248 248zM248 400c84.8 0 153.6-68.8 153.6-153.6S332.8 92.8 248 92.8 94.4 161.6 94.4 246.4s68.8 153.6 153.6 153.6zm-74.9-167.2c-2.3-2.3-6.1-2.3-8.5 0s-2.3 6.1 0 8.5l44.7 44.7-44.7 44.7c-2.3 2.3-2.3 6.1 0 8.5s6.1 2.3 8.5 0L221 303l42.4 42.4c2.3 2.3 6.1 2.3 8.5 0s2.3-6.1 0-8.5L238.1 294.5l42.4-42.4c2.3-2.3 2.3-6.1 0-8.5s-6.1-2.3-8.5 0L229.5 286l-42.4-42.4z"/></svg> <!-- Simplified GitHub icon placeholder, official one is very complex -->
+                            </a>
+                            <!-- LinkedIn -->
+                            <a href="https://linkedin.com/in/yourprofile" class="text-slate-400 hover:text-sky-400 transition-colors" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                                <span class="sr-only">LinkedIn</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-6 w-6" fill="currentColor"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0153.79-54.3h.38c29.7 0 53.41 24.5 53.41 54.3-.01 29.7-23.72 54.3-53.81 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+                        <div class="md:grid md:grid-cols-2 md:gap-8">
+                            <div>
+                                <h3 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">Solutions</h3>
+                                <ul role="list" class="mt-4 space-y-3">
+                                    <li><a href="#" class="text-base text-slate-400 hover:text-sky-400 transition-colors">Fact-Checking API</a></li>
+                                    <li><a href="#" class="text-base text-slate-400 hover:text-sky-400 transition-colors">Browser Extension</a></li>
+                                    <li><a href="#" class="text-base text-slate-400 hover:text-sky-400 transition-colors">For Developers</a></li>
+                                </ul>
+                            </div>
+                            <div class="mt-12 md:mt-0">
+                                <h3 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">Company</h3>
+                                <ul role="list" class="mt-4 space-y-3">
+                                    <li><a href="about.html" class="text-base text-slate-400 hover:text-sky-400 transition-colors">About Verifact</a></li>
+                                    <li><a href="how-it-works.html" class="text-base text-slate-400 hover:text-sky-400 transition-colors">How It Works</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="md:grid md:grid-cols-2 md:gap-8">
+                            <div>
+                                <h3 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">Legal</h3>
+                                <ul role="list" class="mt-4 space-y-3">
+                                    <li><a href="privacy.html" class="text-base text-slate-400 hover:text-sky-400 transition-colors">Privacy Policy</a></li>
+                                    <li><a href="terms.html" class="text-base text-slate-400 hover:text-sky-400 transition-colors">Terms of Service</a></li>
+                                </ul>
+                            </div>
+                            <div class="mt-12 md:mt-0">
+                                <h3 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">Support</h3>
+                                <ul role="list" class="mt-4 space-y-3">
+                                    <li><a href="contact.html" class="text-base text-slate-400 hover:text-sky-400 transition-colors">Contact Us</a></li>
+                                    <li><a href="faq.html" class="text-base text-slate-400 hover:text-sky-400 transition-colors">FAQ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 border-t border-slate-700 pt-8">
+                    <p class="text-base justify-center text-slate-400 text-center xl:text-left">
+                        © <span id="currentYear"></span> Verifact. All rights reserved.
+                    </p>
+                </div>
+                <div class="mt-8 text-center text-xs text-slate-500">
+                    <p>Built by <a href="https://your-portfolio-or-company.com" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 underline">BitNomads</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Header scroll effect
+            const header = document.getElementById('page-header');
+            if (header) {
+                const handleScroll = () => {
+                    if (window.scrollY > 10) {
+                        header.classList.add('bg-white/80', 'backdrop-blur-lg', 'shadow-md', 'border-slate-200');
+                        header.classList.remove('bg-transparent', 'border-transparent');
+                    } else {
+                        header.classList.remove('bg-white/80', 'backdrop-blur-lg', 'shadow-md', 'border-slate-200');
+                        header.classList.add('bg-transparent', 'border-transparent');
+                    }
+                };
+                window.addEventListener('scroll', handleScroll);
+                handleScroll(); // Initial check
+            }
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconBars = document.getElementById('icon-bars');
+            const iconXMark = document.getElementById('icon-xmark');
+
+            if (mobileMenuButton && mobileMenu && iconBars && iconXMark) {
+                mobileMenuButton.addEventListener('click', () => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('hidden');
+                    iconBars.classList.toggle('hidden');
+                    iconXMark.classList.toggle('hidden');
+                });
+
+                // Close mobile menu on link click
+                const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        mobileMenu.classList.add('hidden');
+                        iconBars.classList.remove('hidden');
+                        iconXMark.classList.add('hidden');
+                    });
+                });
+            }
+
+            // HeroSection "Learn More" smooth scroll
+            const learnMoreButton = document.getElementById('learn-more-button');
+            if (learnMoreButton) {
+                learnMoreButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1); // Get 'how-it-works'
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+            
+            // Set current year in footer
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+
+</body>
+</html>
