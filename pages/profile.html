@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Verifact</title>
+    <meta name="description" content="Manage your Verifact user profile.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="../public/favicon.ico" sizes="any"> 
+
+    <link href="../src/output.css" rel="stylesheet"> 
+
+    <style>
+      /* Custom scrollbar (optional) */
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: #f1f5f9; } /* slate-100 */
+      ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
+      ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+      body {
+        font-family: 'Inter', 'Noto Sans', sans-serif;
+      }
+
+      .animate-spin {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    </style>
+</head>
+<body class="font-['Inter','Noto_Sans',sans-serif]">
+
+    <div class="flex flex-col h-screen overflow-hidden bg-slate-100">
+      <!-- Header (Consistent Dashboard Header) -->
+      <header class="flex-shrink-0 h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 z-30">
+        <div class="flex items-center">
+          <button
+            type="button"
+            id="mobile-sidebar-toggle"
+            class="lg:hidden -ml-1.5 mr-3 p-2 rounded-md text-slate-500 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            title="Open sidebar menu"
+            aria-label="Open sidebar menu"
+          >
+            <span class="sr-only">Open sidebar</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6"><use href="#bars3-icon-path" /></svg>
+          </button>
+          <a href="index.html" class="flex items-center gap-2 group">
+            <img class="h-8 w-auto" src="../assets/verifact-logo.png" alt="Verifact Logo" />
+            <span class="text-xl font-bold text-slate-800 group-hover:text-sky-600 transition-colors hidden sm:inline">Verifact</span>
+          </a>
+        </div>
+        <div class="relative">
+          <button
+            id="user-menu-button"
+            type="button"
+            class="flex items-center p-1 rounded-full text-slate-500 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-500"
+            aria-expanded="false" aria-haspopup="true" title="Open user menu" aria-label="Open user menu"
+          >
+            <span class="sr-only">Open user menu</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7 sm:h-8 sm:w-8"><use href="#user-solid-icon-path" /></svg>
+          </button>
+          <div id="user-menu-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-40">
+            <ul>
+              <li><a href="profile.html" class="user-menu-item block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-sky-600 transition-colors">User Profile</a></li>
+              <li><a href="logout.html" class="user-menu-item block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-sky-600 transition-colors">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex flex-1 overflow-hidden">
+        <!-- Mobile overlay for Sidebar -->
+        <div id="mobile-sidebar-overlay" class="hidden fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"></div>
+
+        <!-- Sidebar Component -->
+        <div
+          id="sidebar"
+          class="fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out -translate-x-full
+                 lg:relative lg:z-auto lg:translate-x-0 h-screen  /* Changed to h-screen for full height */
+                 bg-gradient-to-br from-slate-50 to-white border-r border-slate-200/80 shadow-sm"
+        >
+           <aside class="flex flex-col h-full w-full overflow-hidden">
+            <div class="flex items-center justify-end h-16 px-3 border-b border-slate-200/60 flex-shrink-0 bg-white/70 backdrop-blur-sm">
+              <button id="sidebar-toggle-desktop" class="p-2 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-emerald-400 hidden lg:block ml-2 flex-shrink-0 transition-all duration-200" title="Collapse sidebar" aria-expanded="true" aria-controls="sidebar-nav">
+                <span class="sr-only">Collapse sidebar</span>
+                <svg id="sidebar-collapse-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5"><use href="#chevron-double-left-icon-path" /></svg>
+                <svg id="sidebar-expand-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 hidden"><use href="#chevron-double-right-icon-path" /></svg>
+              </button>
+            </div>
+            <nav id="sidebar-nav" class="flex-1 overflow-y-auto overflow-x-hidden pt-6 pb-4">
+              <div class="mb-4 last:mb-0">
+                <ul role="list" class="space-y-2">
+                  <li class="px-3">
+                    <a href="chat.html" title="Verify New Claim" class="sidebar-nav-item group flex items-center rounded-xl py-3 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] px-4 text-slate-600 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:text-emerald-700 hover:shadow-md">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 flex-shrink-0 mr-3 text-slate-500 group-hover:text-emerald-600"><use href="#check-badge-icon-path" /></svg>
+                      <span class="sidebar-text truncate font-medium">Verify New Claim</span>
+                    </a>
+                  </li>
+                  <li class="px-3">
+                    <a href="history-list.html" title="History" class="sidebar-nav-item group flex items-center rounded-xl py-3 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] px-4 text-slate-600 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:text-emerald-700 hover:shadow-md">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 flex-shrink-0 mr-3 text-slate-500 group-hover:text-emerald-600"><use href="#document-text-icon-path" /></svg>
+                      <span class="sidebar-text truncate font-medium">History</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="mt-8 last:mb-0">
+                <h3 class="sidebar-text mb-3 px-4 text-xs font-bold uppercase tracking-widest text-slate-500 transition-opacity duration-300 opacity-100 h-auto" aria-hidden="false">ACCOUNT</h3>
+                <ul role="list" class="space-y-2">
+                  <li class="px-3">
+                    <a href="profile.html" title="Profile" class="sidebar-nav-item group flex items-center rounded-xl py-3 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] px-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30" aria-current="page">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 flex-shrink-0 mr-3 text-white drop-shadow-sm"><use href="#user-icon-outline-path" /></svg>
+                      <span class="sidebar-text truncate font-medium">Profile</span>
+                    </a>
+                  </li>
+                  <li class="px-3">
+                    <a href="settings.html" title="Settings" class="sidebar-nav-item group flex items-center rounded-xl py-3 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] px-4 text-slate-600 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:text-emerald-700 hover:shadow-md">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 flex-shrink-0 mr-3 text-slate-500 group-hover:text-emerald-600"><use href="#cog-6-tooth-icon-path" /></svg>
+                      <span class="sidebar-text truncate font-medium">Settings</span>
+                    </a>
+                  </li>
+                  <li class="px-3">
+                    <a href="#" title="Security" class="sidebar-nav-item group flex items-center rounded-xl py-3 text-sm font-medium transition-all duration-200 ease-in-out transform hover:scale-[1.02] px-4 cursor-not-allowed text-slate-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 flex-shrink-0 mr-3 text-slate-300"><use href="#shield-check-icon-path" /></svg>
+                      <span class="sidebar-text truncate font-medium">Security</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            <div id="sidebar-user-profile-area" class="flex-shrink-0 border-t border-slate-200/60 p-4 bg-gradient-to-r from-slate-50/50 to-emerald-50/30 h-auto">
+              <a href="profile.html" class="group block transition-all duration-200 hover:scale-105 flex-shrink-0 overflow-hidden" title="User Profile">
+                <div class="flex items-center p-2 rounded-xl hover:bg-white/70 transition-all duration-200">
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-user-icon h-10 w-10 text-slate-400 group-hover:text-emerald-600 transition-colors"><use href="#user-icon-outline-path" /></svg>
+                    <div class="sidebar-user-status-indicator absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white"></div>
+                  </div>
+                  <div class="sidebar-text ml-3 min-w-0">
+                    <p class="text-sm font-semibold text-slate-700 group-hover:text-slate-900 truncate" id="sidebar-username">Bola A. Tinubu</p>
+                    <p class="text-xs font-medium text-emerald-600 group-hover:text-emerald-700 truncate">View Profile</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Main Content Area (ProfilePageContent) -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100">
+          <div id="profile-content-wrapper" class="py-8 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <div class="mb-8 md:flex md:items-center md:justify-between">
+              <div class="flex-1 min-w-0">
+                <h1 class="text-3xl font-bold leading-tight text-slate-900">Your Profile</h1>
+                <p class="mt-1 text-sm text-slate-500">Manage your personal information and account settings.</p>
+              </div>
+              <div class="mt-4 flex md:mt-0 md:ml-4">
+                <button type="button" id="edit-profile-button"
+                  class="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 border-transparent bg-sky-600 text-white hover:bg-sky-700 focus:ring-sky-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-2 h-5 w-5"><use href="#pencil-square-icon-path" /></svg>
+                  Edit Profile
+                </button>
+              </div>
+            </div>
+
+            <div id="notification-area" class="hidden mb-6 p-4 rounded-md" role="alert">
+              <div class="flex">
+                <div class="flex-shrink-0" id="notification-icon-container">
+                  {/* Icon will be inserted here */}
+                </div>
+                <div class="ml-3"><p class="text-sm font-medium" id="notification-message"></p></div>
+              </div>
+            </div>
+            
+            <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+              <div class="p-6 sm:p-8 border-b border-slate-200">
+                <div class="sm:flex sm:items-center sm:space-x-5">
+                  <div class="relative flex-shrink-0">
+                    <img id="profile-avatar-img" class="h-24 w-24 rounded-full object-cover ring-4 ring-white sm:h-32 sm:w-32" src="assets/images/user-avatar.png" alt="User Avatar" />
+                    <label id="avatar-upload-label" for="avatar-upload-input" class="hidden absolute bottom-0 right-0 mb-1 mr-1 bg-white p-1.5 rounded-full shadow-md hover:bg-slate-50 cursor-pointer" title="Change avatar">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-slate-600"><use href="#camera-icon-path" /></svg>
+                      <input id="avatar-upload-input" name="avatar-upload" type="file" class="sr-only" accept="image/*" title="Upload a new avatar" aria-label="Upload a new avatar"/>
+                    </label>
+                  </div>
+                  <div class="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
+                    <div id="display-name-container">
+                        <h2 id="profile-name-display" class="text-2xl font-bold text-slate-900 sm:text-3xl"></h2>
+                    </div>
+                    <div id="edit-name-container" class="hidden">
+                        <input type="text" name="name" id="name-input" class="text-2xl font-bold text-slate-900 sm:text-3xl border-b-2 border-slate-300 focus:border-sky-500 outline-none pb-1 w-full" placeholder="Enter your full name" title="Full Name" />
+                    </div>
+                    <p id="profile-email-display" class="text-sm font-medium text-slate-500"></p>
+                  </div>
+                </div>
+              </div>
+
+              <form id="profile-form">
+                <dl class="divide-y divide-slate-200">
+                  <div class="px-6 py-5 grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-3">
+                    <div class="sm:col-span-3">
+                      <label for="bio-input" class="block text-slate-700 mb-4 text-2xl font-bold">About</label>
+                      <div id="display-bio-container">
+                        <p id="profile-bio-display" class="mt-1 text-sm text-slate-700 whitespace-pre-wrap"></p>
+                      </div>
+                      <div id="edit-bio-container" class="hidden">
+                        <textarea id="bio-input" name="bio" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm" placeholder="Tell us a little about yourself..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="px-6 py-5 grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-3">
+                    <h3 class="sm:col-span-3 text-lg leading-6 font-medium text-slate-900">Contact Information</h3>
+                    
+
+                    <div class="sm:col-span-1" id="field-container-name">
+                        <div class="display-field">
+                            <dt class="text-sm font-medium text-slate-500 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2 text-slate-400"><use href="#user-icon-outline-path" /></svg>Full Name
+                            </dt>
+                            <dd class="mt-1 text-sm text-slate-900" id="display-value-name"></dd>
+                        </div>
+                        <div class="edit-field hidden">
+                            <label for="name-contact-input" class="block text-sm font-medium text-slate-700">Full Name</label>
+                            <input type="text" id="name-contact-input" name="name" class="mt-1 block w-full common-input-style" />
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-1" id="field-container-email">
+                        <div class="display-field">
+                            <dt class="text-sm font-medium text-slate-500 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2 text-slate-400"><use href="#envelope-icon-path" /></svg>Email Address
+                            </dt>
+                            <dd class="mt-1 text-sm text-slate-900" id="display-value-email"></dd>
+                        </div>
+                         <div class="edit-field hidden">
+                            <label for="email-input" class="block text-sm font-medium text-slate-700">Email Address</label>
+                            <input type="email" id="email-input" name="email" class="mt-1 block w-full common-input-style" />
+                        </div>
+                    </div>
+                    <div class="sm:col-span-1" id="field-container-phone">
+                        <div class="display-field">
+                            <dt class="text-sm font-medium text-slate-500 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2 text-slate-400"><use href="#device-phone-mobile-icon-path" /></svg>Phone Number
+                            </dt>
+                            <dd class="mt-1 text-sm text-slate-900" id="display-value-phone"></dd>
+                        </div>
+                         <div class="edit-field hidden">
+                            <label for="phone-input" class="block text-sm font-medium text-slate-700">Phone Number</label>
+                            <input type="tel" id="phone-input" name="phone" class="mt-1 block w-full common-input-style" />
+                        </div>
+                    </div>
+                  </div>
+                </dl>
+                <div id="form-actions" class="hidden px-6 py-4 bg-slate-50 text-right border-t border-slate-200">
+                  <button type="button" id="cancel-edit-button" class="mr-3 inline-flex justify-center py-2 px-4 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">Cancel</button>
+                  <button type="submit" id="save-changes-button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    
+    <!-- Reusable SVG Icon Definitions -->
+    <svg class="hidden">
+      <defs>
+        <path id="bars3-icon-path" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        <path id="user-solid-icon-path" fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+        <path id="chevron-double-left-icon-path" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
+        <path id="chevron-double-right-icon-path" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+        <path id="check-badge-icon-path" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.745 3.745 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+        <path id="document-text-icon-path" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+        <path id="user-icon-outline-path" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path id="cog-6-tooth-icon-path" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m18 0h-1.5m-15 0H3.039M20.962 12a9 9 0 11-18 0 9 9 0 0118 0zM12 6.75v.01M12 12.75v.01M12 18.75v.01M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+        <path id="shield-check-icon-path" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622a11.99 11.99 0 00-.598-3.75h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        <!-- ProfilePageContent Icons -->
+        <path id="envelope-icon-path" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+        <path id="device-phone-mobile-icon-path" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75A2.25 2.25 0 0015.75 1.5h-2.25m-3.75 0V5.625m3.75-4.125V5.625m0-4.125h.008v.008H12v-.008zm0 4.125h.008v.008H12v-.008zm0 0h.008v.008H12v-.008zm0-4.125h.008v.008H12v-.008zM10.5 15h3M10.5 18h3m-3.75-3.75h.008v.008H6.75v-.008zm0 0h.008v.008H6.75v-.008zm0 0h.008v.008H6.75v-.008zM9 15h.008v.008H9v-.008zm3.75 0h.008v.008H12.75v-.008zm0 0h.008v.008H12.75v-.008zm0 0h.008v.008H12.75v-.008z" />
+        <path id="camera-icon-path" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316zM12 15a3 3 0 100-6 3 3 0 000 6z" />
+        <path id="pencil-square-icon-path" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        <path id="check-circle-icon-solid" fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+        <path id="x-circle-icon-solid" fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+      </defs>
+    </svg>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // --- Sidebar and Header JS (Consistent with other dashboard pages) ---
+        const sidebar = document.getElementById('sidebar');
+        const mobileSidebarToggle = document.getElementById('mobile-sidebar-toggle');
+        const mobileSidebarOverlay = document.getElementById('mobile-sidebar-overlay');
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+        const desktopSidebarToggleButton = document.getElementById('sidebar-toggle-desktop');
+        const sidebarCollapseIcon = document.getElementById('sidebar-collapse-icon');
+        const sidebarExpandIcon = document.getElementById('sidebar-expand-icon');
+        const sidebarTextElements = document.querySelectorAll('.sidebar-text');
+        const sidebarNavItems = document.querySelectorAll('.sidebar-nav-item');
+        const sidebarUserProfileArea = document.getElementById('sidebar-user-profile-area');
+        const sidebarUserIcon = document.querySelector('.sidebar-user-icon');
+        const sidebarUserStatusIndicator = document.querySelector('.sidebar-user-status-indicator');
+        const sidebarUsernameEl = document.getElementById('sidebar-username');
+
+
+        let isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        let isMobileSidebarOpen = false;
+        let isUserMenuOpen = false;
+        let wasDesktopCollapsedBeforeMobileOpen = isSidebarCollapsed;
+
+        const applyDesktopCollapseStyles = (collapse) => { /* ... (same as history-detail.html) ... */ 
+            sidebar.classList.toggle('w-64', !collapse); sidebar.classList.toggle('w-20', collapse);
+            if (sidebarCollapseIcon) sidebarCollapseIcon.classList.toggle('hidden', collapse);
+            if (sidebarExpandIcon) sidebarExpandIcon.classList.toggle('hidden', !collapse);
+            sidebarTextElements.forEach(el => { el.classList.toggle('opacity-0', collapse); el.classList.toggle('h-0', collapse); el.classList.toggle('overflow-hidden', collapse); el.classList.toggle('opacity-100', !collapse); el.classList.toggle('h-auto', !collapse); if (el.tagName === 'H3') el.setAttribute('aria-hidden', collapse); });
+            sidebarNavItems.forEach(item => { item.classList.toggle('px-3', collapse); item.classList.toggle('justify-center', collapse); item.classList.toggle('px-4', !collapse); const icon = item.querySelector('svg'); if (icon) icon.classList.toggle('mr-3', !collapse); const textSpan = item.querySelector('.sidebar-text'); if (collapse && textSpan) item.title = textSpan.textContent.trim(); else item.removeAttribute('title'); });
+            if (sidebarUserProfileArea) { sidebarUserProfileArea.classList.toggle('h-[70px]', collapse); sidebarUserProfileArea.classList.toggle('flex', collapse); sidebarUserProfileArea.classList.toggle('items-center', collapse); sidebarUserProfileArea.classList.toggle('justify-center', collapse); sidebarUserProfileArea.classList.toggle('h-auto', !collapse); const userProfileLink = sidebarUserProfileArea.querySelector('a'); if (userProfileLink) { userProfileLink.classList.toggle('p-2', collapse); userProfileLink.classList.toggle('rounded-lg', collapse); userProfileLink.classList.toggle('hover:bg-emerald-100', collapse); } }
+            if (sidebarUserIcon) { sidebarUserIcon.classList.toggle('h-7', collapse); sidebarUserIcon.classList.toggle('w-7', collapse); sidebarUserIcon.classList.toggle('text-slate-500', collapse); sidebarUserIcon.classList.toggle('hover:text-emerald-600', collapse); sidebarUserIcon.classList.toggle('h-10', !collapse); sidebarUserIcon.classList.toggle('w-10', !collapse); sidebarUserIcon.classList.toggle('text-slate-400', !collapse); }
+            if(sidebarUserStatusIndicator) sidebarUserStatusIndicator.classList.toggle('hidden', collapse);
+        };
+        const toggleDesktopSidebar = () => { isSidebarCollapsed = !isSidebarCollapsed; if (desktopSidebarToggleButton) { desktopSidebarToggleButton.setAttribute('aria-expanded', !isSidebarCollapsed); desktopSidebarToggleButton.title = isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'; desktopSidebarToggleButton.querySelector('span.sr-only').textContent = isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'; } applyDesktopCollapseStyles(isSidebarCollapsed); localStorage.setItem('sidebarCollapsed', isSidebarCollapsed); };
+        if (mobileSidebarToggle && sidebar && mobileSidebarOverlay) { mobileSidebarToggle.addEventListener('click', () => { isMobileSidebarOpen = !isMobileSidebarOpen; sidebar.classList.toggle('-translate-x-full', !isMobileSidebarOpen); sidebar.classList.toggle('translate-x-0', isMobileSidebarOpen); mobileSidebarOverlay.classList.toggle('hidden', !isMobileSidebarOpen); mobileSidebarToggle.setAttribute('aria-expanded', isMobileSidebarOpen); mobileSidebarToggle.querySelector('span.sr-only').textContent = isMobileSidebarOpen ? 'Close sidebar' : 'Open sidebar'; if (isMobileSidebarOpen) { wasDesktopCollapsedBeforeMobileOpen = isSidebarCollapsed; applyDesktopCollapseStyles(false); } else { if (window.innerWidth >= 1024) applyDesktopCollapseStyles(wasDesktopCollapsedBeforeMobileOpen); } }); mobileSidebarOverlay.addEventListener('click', () => { if (isMobileSidebarOpen) mobileSidebarToggle.click(); }); }
+        document.querySelectorAll('#sidebar .sidebar-nav-item, #sidebar-user-profile-area a').forEach(link => { link.addEventListener('click', () => { if (isMobileSidebarOpen && window.innerWidth < 1024) mobileSidebarToggle.click(); }); });
+        if (userMenuButton && userMenuDropdown) { userMenuButton.addEventListener('click', (event) => { event.stopPropagation(); isUserMenuOpen = !isUserMenuOpen; userMenuDropdown.classList.toggle('hidden', !isUserMenuOpen); userMenuButton.setAttribute('aria-expanded', isUserMenuOpen); }); document.addEventListener('click', (event) => { if (isUserMenuOpen && !userMenuDropdown.contains(event.target) && !userMenuButton.contains(event.target)) { isUserMenuOpen = false; userMenuDropdown.classList.add('hidden'); userMenuButton.setAttribute('aria-expanded', false); } }); userMenuDropdown.querySelectorAll('.user-menu-item').forEach(item => { item.addEventListener('click', () => { isUserMenuOpen = false; userMenuDropdown.classList.add('hidden'); userMenuButton.setAttribute('aria-expanded', false); }); }); }
+        if (desktopSidebarToggleButton) { desktopSidebarToggleButton.addEventListener('click', toggleDesktopSidebar); if (window.innerWidth >= 1024) { applyDesktopCollapseStyles(isSidebarCollapsed); if (desktopSidebarToggleButton) { desktopSidebarToggleButton.setAttribute('aria-expanded', !isSidebarCollapsed); desktopSidebarToggleButton.title = isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'; desktopSidebarToggleButton.querySelector('span.sr-only').textContent = isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'; } } else { applyDesktopCollapseStyles(false); } }
+        // --- End Sidebar and Header JS ---
+
+
+        // --- Profile Page Content Logic ---
+        const initialUserProfileData = {
+          name: 'Bola Ahmed Tinubu',
+          email: 'bola.tinubu@example.com',
+          phone: '+234 800 123 4567',
+          bio: 'Dedicated to fostering innovation and growth. Passionate about technology and its impact on society. Currently focused on leveraging AI for truth and transparency with Verifact.',
+          avatarUrl: 'https://images.app.goo.gl/vx4JeMqBAgWE4sEJA', // Placeholder, use a real accessible image or default
+        };
+        // A local copy of the user data for display and editing
+        let currentProfileData = JSON.parse(localStorage.getItem('userProfileData')) || JSON.parse(JSON.stringify(initialUserProfileData));
+        let formData = JSON.parse(JSON.stringify(currentProfileData));
+        let isEditing = false;
+        let isLoading = false;
+
+        const editProfileButton = document.getElementById('edit-profile-button');
+        const cancelEditButton = document.getElementById('cancel-edit-button');
+        const profileForm = document.getElementById('profile-form');
+        const saveChangesButton = document.getElementById('save-changes-button');
+        
+        const notificationArea = document.getElementById('notification-area');
+        const notificationIconContainer = document.getElementById('notification-icon-container');
+        const notificationMessage = document.getElementById('notification-message');
+
+        const profileAvatarImg = document.getElementById('profile-avatar-img');
+        const avatarUploadLabel = document.getElementById('avatar-upload-label');
+        const avatarUploadInput = document.getElementById('avatar-upload-input');
+        
+        const displayNameContainer = document.getElementById('display-name-container');
+        const editNameContainer = document.getElementById('edit-name-container');
+        const profileNameDisplay = document.getElementById('profile-name-display');
+        const nameInput = document.getElementById('name-input'); // For header name
+        const profileEmailDisplay = document.getElementById('profile-email-display');
+
+        const displayBioContainer = document.getElementById('display-bio-container');
+        const editBioContainer = document.getElementById('edit-bio-container');
+        const profileBioDisplay = document.getElementById('profile-bio-display');
+        const bioInput = document.getElementById('bio-input');
+
+        // Contact Info Fields (using a more generic approach)
+        const nameContactInput = document.getElementById('name-contact-input');
+        const emailInput = document.getElementById('email-input');
+        const phoneInput = document.getElementById('phone-input');
+        
+        const formActionsDiv = document.getElementById('form-actions');
+
+        const displayValueName = document.getElementById('display-value-name');
+        const displayValueEmail = document.getElementById('display-value-email');
+        const displayValuePhone = document.getElementById('display-value-phone');
+
+        const defaultAvatar = 'assets/images/user-avatar.png'; // Path to your default avatar
+
+        const populateDisplayData = () => {
+            profileAvatarImg.src = currentProfileData.avatarUrl || defaultAvatar;
+            profileNameDisplay.textContent = currentProfileData.name;
+            sidebarUsernameEl.textContent = currentProfileData.name; // Update sidebar username too
+            profileEmailDisplay.textContent = currentProfileData.email;
+            profileBioDisplay.textContent = currentProfileData.bio || 'No biography provided.';
+            
+            displayValueName.textContent = currentProfileData.name || 'N/A';
+            displayValueEmail.textContent = currentProfileData.email || 'N/A';
+            displayValuePhone.textContent = currentProfileData.phone || 'N/A';
+        };
+
+        const populateFormData = () => {
+            formData = JSON.parse(JSON.stringify(currentProfileData)); // Deep copy
+            nameInput.value = formData.name; // Header name input
+            bioInput.value = formData.bio || '';
+            nameContactInput.value = formData.name; // Contact name input
+            emailInput.value = formData.email;
+            phoneInput.value = formData.phone || '';
+            // If avatar preview is needed during edit:
+            // profileAvatarImg.src = formData.avatarUrl || defaultAvatar;
+        };
+        
+        const toggleEditState = (editing) => {
+            isEditing = editing;
+            
+            // Toggle visibility of display vs edit containers
+            displayNameContainer.classList.toggle('hidden', isEditing);
+            editNameContainer.classList.toggle('hidden', !isEditing);
+            displayBioContainer.classList.toggle('hidden', isEditing);
+            editBioContainer.classList.toggle('hidden', !isEditing);
+            
+            document.querySelectorAll('.display-field').forEach(el => el.classList.toggle('hidden', isEditing));
+            document.querySelectorAll('.edit-field').forEach(el => el.classList.toggle('hidden', !isEditing));
+
+            avatarUploadLabel.classList.toggle('hidden', !isEditing);
+            formActionsDiv.classList.toggle('hidden', !isEditing);
+
+            if (isEditing) {
+                populateFormData(); // Fill form with current data
+                editProfileButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-2 h-5 w-5"><use href="#x-circle-icon-solid" /></svg>Cancel`;
+                editProfileButton.classList.remove('bg-sky-600', 'hover:bg-sky-700', 'text-white', 'border-transparent', 'focus:ring-sky-500');
+                editProfileButton.classList.add('border-slate-300', 'bg-white', 'text-slate-700', 'hover:bg-slate-50', 'focus:ring-slate-400');
+            } else {
+                editProfileButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-2 h-5 w-5"><use href="#pencil-square-icon-path" /></svg>Edit Profile`;
+                editProfileButton.classList.add('bg-sky-600', 'hover:bg-sky-700', 'text-white', 'border-transparent', 'focus:ring-sky-500');
+                editProfileButton.classList.remove('border-slate-300', 'bg-white', 'text-slate-700', 'hover:bg-slate-50', 'focus:ring-slate-400');
+                hideNotification();
+            }
+            // Disable/enable form inputs based on isLoading
+            [nameInput, bioInput, nameContactInput, emailInput, phoneInput, saveChangesButton, cancelEditButton, editProfileButton, avatarUploadInput].forEach(el => {
+                if(el) el.disabled = isLoading;
+            });
+        };
+
+        const showNotification = (type, message) => {
+            notificationArea.classList.remove('hidden', 'bg-green-50', 'text-green-700', 'bg-red-50', 'text-red-700');
+            if (type === 'success') {
+                notificationArea.classList.add('bg-green-50', 'text-green-700');
+                notificationIconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-green-400"><use href="#check-circle-icon-solid" /></svg>`;
+            } else {
+                notificationArea.classList.add('bg-red-50', 'text-red-700');
+                notificationIconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-red-400"><use href="#x-circle-icon-solid" /></svg>`;
+            }
+            notificationMessage.textContent = message;
+            setTimeout(hideNotification, 5000);
+        };
+        const hideNotification = () => notificationArea.classList.add('hidden');
+
+        const handleAvatarChange = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    formData.avatarUrl = e.target.result;
+                    profileAvatarImg.src = e.target.result; // Preview new avatar
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        if(avatarUploadInput) avatarUploadInput.addEventListener('change', handleAvatarChange);
+
+        if (editProfileButton) {
+            editProfileButton.addEventListener('click', () => {
+                toggleEditState(!isEditing);
+            });
+        }
+        if (cancelEditButton) {
+            cancelEditButton.addEventListener('click', () => {
+                // Revert image preview if an image was selected but not saved
+                profileAvatarImg.src = currentProfileData.avatarUrl || defaultAvatar;
+                toggleEditState(false);
+            });
+        }
+        
+        if (profileForm) {
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                isLoading = true;
+                toggleEditState(true); // Keep in edit mode but disable fields
+                saveChangesButton.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Saving...`;
+
+                // Update formData from inputs just before submitting
+                formData.name = nameInput.value; // From header name input
+                formData.bio = bioInput.value;
+                // formData.name is also nameContactInput.value, no need to read twice
+                formData.email = emailInput.value;
+                formData.phone = phoneInput.value;
+
+                // Simulate API call
+                console.log("Updating profile with:", formData);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                const success = formData.name !== "Error User"; // Mock success/failure
+                const message = success ? "Profile updated successfully!" : "Failed to update profile. Please try again.";
+
+                isLoading = false;
+                saveChangesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-2 h-5 w-5"><use href="#check-circle-icon-solid" /></svg>Save Changes`;
+
+                if (success) {
+                    currentProfileData = JSON.parse(JSON.stringify(formData));
+                    localStorage.setItem('userProfileData', JSON.stringify(currentProfileData)); // Save to local storage
+                    populateDisplayData();
+                    toggleEditState(false);
+                    showNotification('success', message);
+                } else {
+                    toggleEditState(true); // Stay in edit mode, re-enable fields
+                    showNotification('error', message);
+                }
+            });
+        }
+        
+
+        document.querySelectorAll('.common-input-style').forEach(input => {
+            input.classList.add('mt-1', 'block', 'w-full', 'px-3', 'py-2', 'bg-white', 'border', 'border-slate-300', 'rounded-md', 'shadow-sm', 'focus:outline-none', 'focus:ring-sky-500', 'focus:border-sky-500', 'sm:text-sm', 'disabled:bg-slate-50', 'disabled:text-slate-500', 'disabled:border-slate-200', 'disabled:shadow-none');
+        });
+
+
+        // Initial population and state
+        populateDisplayData();
+        toggleEditState(false); // Start in display mode
+      });
+    </script>
+</body>
+</html>

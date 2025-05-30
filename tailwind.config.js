@@ -9,6 +9,7 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/typography'), // For the 'prose' class in Verifact messages
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/line-clamp'),
   ],
 }
