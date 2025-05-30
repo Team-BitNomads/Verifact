@@ -309,13 +309,12 @@
                     if (profileHeaderName) profileHeaderName.textContent = currentFormData.fullName;
                     const profileHeaderUsername = settingsContentArea.querySelector('.ml-6 p');
                     if (profileHeaderUsername) profileHeaderUsername.textContent = `@${currentFormData.username}`;
-                    if(sidebarUsernameEl) sidebarUsernameEl.textContent = currentFormData.fullName; // Update main sidebar too
+                    if(sidebarUsernameEl) sidebarUsernameEl.textContent = currentFormData.fullName; 
                 }
             });
         }
         
-        // Initial Load for settings page
-        if (sidebarUsernameEl) sidebarUsernameEl.textContent = currentFormData.fullName; // Populate main sidebar username
+        if (sidebarUsernameEl) sidebarUsernameEl.textContent = currentFormData.fullName; 
         applyTheme(currentFormData.theme);
         renderSettingsSubNavigation();
         renderActiveSettingsSection();
