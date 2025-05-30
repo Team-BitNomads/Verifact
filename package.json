@@ -1,9 +1,11 @@
 {
   "name": "newverifact",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tailwindcss -i ./src/input.css -o ./assets/css/output.css --watch",
+    "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/output.css",
+    "dev": "tailwindcss -i ./src/input.css -o ./assets/css/output.css --watch"
   },
   "repository": {
     "type": "git",
