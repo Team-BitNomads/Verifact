@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./assets/css/output.css --watch",
-    "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/output.css",
-    "dev": "tailwindcss -i ./src/input.css -o ./assets/css/output.css --watch"
+    "build": "tailwindcss -i ./app.css -o ./assets/css/output.css",
+    "build:css": "tailwindcss -i ./app.css -o ./assets/css/output.css",
+    "dev": "tailwindcss -i ./app.css -o ./assets/css/output.css --watch"
   },
   "repository": {
     "type": "git",
