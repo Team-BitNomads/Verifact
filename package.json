@@ -1,7 +1,6 @@
 {
   "name": "newverifact",
   "version": "1.0.0",
-  "main": "index.html",
   "scripts": {
     "build": "tailwindcss -i ./app.css -o ./assets/css/output.css",
     "build:css": "tailwindcss -i ./app.css -o ./assets/css/output.css",
