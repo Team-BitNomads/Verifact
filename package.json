@@ -2,9 +2,10 @@
   "name": "newverifact",
   "version": "1.0.0",
   "scripts": {
-    "build": "tailwindcss -i ./app.css -o ./assets/css/output.css",
-    "build:css": "tailwindcss -i ./app.css -o ./assets/css/output.css",
-    "dev": "tailwindcss -i ./app.css -o ./assets/css/output.css --watch"
+    "build": "tailwindcss -i ./app.css -o src/output.css",
+    "build:css": "tailwindcss -i ./app.css -o src/output.css",
+    "dev": "tailwindcss -i ./app.css -o src/output.css --watch",
+    "start": "npx http-server . -p $PORT"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,8 @@
   "description": "",
   "dependencies": {
     "@tailwindcss/cli": "^4.1.8",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "http-server": "^14.1.1"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
