@@ -21,8 +21,10 @@
       .animate-fade-in-up { animation: fade-in-up 0.4s ease-out; }
       
       :root {
-        --verified-color: rgb(52 211 153); --debunked-color: rgb(244 63 94);
-        --inconclusive-color: rgb(245 158 11); --pending-color: rgb(14 165 233);
+        --verified-color: rgb(52 211 153); 
+        --debunked-color: rgb(244 63 94);
+        --inconclusive-color: rgb(245 158 11); 
+        --pending-color: rgb(14 165 233);
       }
       body { font-family: 'Inter', 'Noto Sans', sans-serif; }
     </style>
@@ -123,7 +125,7 @@
                   <p id="image-preview-name" class="text-xs text-slate-500 mt-1.5 truncate font-medium" title=""></p>
                 </div>
                 <!-- Restored original input area structure -->
-                <form id="chat-form" class="relative flex items-end p-2 bg-white/80 backdrop-blur-sm border border-slate-300/50 rounded-2xl shadow-xl focus-within:ring-2 focus-within:ring-sky-500/50 focus-within:border-sky-400 transition-all duration-200">
+                <form id="chat-form" enctype="multipart/form-data" class="relative flex items-end p-2 bg-white/80 backdrop-blur-sm border border-slate-300/50 rounded-2xl shadow-xl focus-within:ring-2 focus-within:ring-sky-500/50 focus-within:border-sky-400 transition-all duration-200">
                     <button
                         type="button"
                         id="upload-image-button"

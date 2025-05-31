@@ -1,74 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Shared Mock Data for History ---
-  const allHistoryItems = [
-    {
-      id: '1',
-      claimText:
-        'Scientists discover a new species of glowing mushrooms in the Amazon rainforest that could revolutionize bioluminescent technology.',
-      verificationDate: new Date(2023, 10, 15, 9, 30).toISOString(),
-      status: 'pending',
-      summary:
-        'Initial checks indicate this is a recent claim circulating on social media. Further verification is in progress to confirm sources and scientific backing.',
-      detailedExplanation:
-        "The claim about glowing mushrooms is currently under investigation. Preliminary searches show some social media buzz but no confirmed scientific publications yet. We are contacting mycology experts for their input.\n\nUpdate: Some species of fungi are naturally bioluminescent, but a 'new species' with revolutionary tech potential requires peer-reviewed evidence which is currently lacking.",
-      evidenceLinks: [{ title: 'Nature News: Bioluminescent Fungi', url: '#' }]
-    },
-    {
-      id: '2',
-      claimText:
-        'A new study shows that drinking coffee can increase your lifespan by an average of 5 years.',
-      verificationDate: new Date(2023, 9, 22, 14, 0).toISOString(),
-      status: 'verified',
-      summary:
-        'Multiple peer-reviewed studies correlate regular coffee consumption with reduced mortality risk. The "5 years" claim is an oversimplification, but the general health benefit is supported.',
-      imageUrl:
-        'https://images.unsplash.com/photo-1559496417-e7f25cb247f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29mZmVlfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=80',
-      originalSource: 'Global Health Times',
-      detailedExplanation:
-        "Multiple peer-reviewed epidemiological studies have indeed found a correlation between regular coffee consumption (typically 2-4 cups per day) and a reduced risk of mortality from various causes, including heart disease, stroke, and some cancers. While these studies are largely observational and don't definitively prove causation, the consistency of findings across large populations is significant.\n\nThe claim of an 'average of 5 years' increase is likely an oversimplification or an optimistic interpretation of some specific study's findings. The actual impact on lifespan is complex and varies based on individual genetics, lifestyle, and the type of coffee consumed. However, the general consensus is that moderate coffee consumption is associated with health benefits for most adults.\n\nIt's important to note that excessive coffee intake can have negative side effects, and individuals with certain health conditions should consult their doctor.",
-      evidenceLinks: [
-        { title: 'Harvard T.H. Chan: Coffee and Health', url: '#' },
-        { title: 'BMJ Meta-Analysis on Coffee Consumption', url: '#' }
-      ]
-    },
-    {
-      id: '3',
-      claimText:
-        'Viral video claims tap water in New York City is unsafe due to microplastic contamination making it glow blue under UV light.',
-      verificationDate: new Date(2023, 8, 5, 11, 15).toISOString(),
-      status: 'debunked',
-      summary:
-        'NYC official water reports and independent tests show tap water meets safety standards. The "glowing water" effect in the video is likely due to added substances or lighting tricks, not inherent contamination.',
-      detailedExplanation:
-        "The claim that NYC tap water glows blue due to microplastic contamination is false. Official reports from the NYC Department of Environmental Protection consistently show that the city's tap water meets or exceeds all federal and state safety standards. Microplastics are an emerging concern globally, but there is no evidence they cause water to glow blue or that NYC water has dangerous levels.\n\nThe video likely uses an additive (like tonic water, which contains quinine and fluoresces under UV light) or special lighting effects to create the illusion. This is a common tactic in misinformation campaigns designed to cause alarm.",
-      evidenceLinks: [{ title: 'NYC DEP Water Quality Report', url: '#' }]
-    },
-    {
-      id: '4',
-      claimText:
-        'Is it true that cats always land on their feet? A myth-busting investigation.',
-      verificationDate: new Date(2023, 7, 1, 16, 45).toISOString(),
-      status: 'verified',
-      summary:
-        "Cats have a 'righting reflex' that allows them to orient themselves mid-air. While highly effective, it's not foolproof, especially from short falls or if the cat is unwell.",
-      detailedExplanation:
-        "Cats possess an innate ability called the 'righting reflex,' which allows them to orient their bodies during a fall to land on their feet. This involves a complex series of movements starting with the head, then the spine, and finally the legs. This reflex is typically developed by the time a kitten is 6-7 weeks old.\n\nHowever, the statement that cats *always* land on their feet is an overstatement. The effectiveness of the reflex depends on the height of the fall (too short, and they may not have time to orient; too high, and the impact force can still cause injury despite landing on their feet) and the cat's physical condition. Injuries can still occur.",
-      imageUrl:
-        'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0fGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60'
-    },
-    {
-      id: '5',
-      claimText:
-        'Reports suggest a new AI can predict stock market movements with 99% accuracy, leading to concerns about market stability.',
-      verificationDate: new Date(2023, 11, 1, 10, 0).toISOString(),
-      status: 'pending',
-      summary:
-        'This claim is under review. Predicting markets with such high accuracy is historically improbable. We are investigating the source and methodology.',
-      detailedExplanation:
-        'The claim of an AI predicting stock markets with 99% accuracy is highly dubious and currently unverified. Financial markets are notoriously complex and influenced by a vast number of unpredictable factors. While AI is increasingly used in algorithmic trading and market analysis, achieving such a high and consistent prediction rate would represent an unprecedented breakthrough and would likely have already caused significant market disruption if true.\n\nWe are searching for credible sources or research papers to support this claim. Most often, such claims originate from scams or exaggerated marketing for financial products.',
-      evidenceLinks: []
-    }
-  ]
 
   // --- Sidebar and Header JS ---
   const sidebar = document.getElementById('sidebar')
@@ -252,154 +182,222 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- End Sidebar and Header JS ---
 
   // --- Claim Detail Logic ---
-  const claimDetailLoadingEl = document.getElementById('claim-detail-loading')
-  const claimDetailErrorEl = document.getElementById('claim-detail-error')
-  const errorMessageTextEl = document.getElementById('error-message-text')
-  const claimDetailContentWrapperEl = document.getElementById(
-    'claim-detail-content'
-  )
+  const claimDetailLoadingEl = document.getElementById('claim-detail-loading');
+  const claimDetailErrorEl = document.getElementById('claim-detail-error');
+  const errorMessageTextEl = document.getElementById('error-message-text');
+  const claimDetailContentWrapperEl = document.getElementById('claim-detail-content');
 
+  // Status conversion map
+  const VERDICT_TO_STATUS = {
+    'True': 'verified',
+    'False': 'debunked',
+    'Inconclusive': 'inconclusive'
+  };
+
+  // Updated status badge generator with direct SVG paths
   const getStatusBadgeHTML = (status, large = false) => {
-    let bgColor = 'bg-slate-100'
-    let textColor = 'text-slate-700'
-    let IconId = 'status-inconclusive-icon-solid'
+    let bgColor = 'bg-slate-100';
+    let textColor = 'text-slate-700';
+    let iconPath = '';
+    
     switch (status) {
       case 'verified':
-        bgColor = 'bg-green-100'
-        textColor = 'text-green-700'
-        IconId = 'status-verified-icon-solid'
-        break
+        bgColor = 'bg-green-100';
+        textColor = 'text-green-700';
+        iconPath = 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z';
+        break;
       case 'debunked':
-        bgColor = 'bg-red-100'
-        textColor = 'text-red-700'
-        IconId = 'status-debunked-icon-solid'
-        break
+        bgColor = 'bg-red-100';
+        textColor = 'text-red-700';
+        iconPath = 'M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z';
+        break;
       case 'pending':
-        bgColor = 'bg-sky-100'
-        textColor = 'text-sky-700'
-        IconId = 'status-pending-icon-solid'
-        break
+        bgColor = 'bg-sky-100';
+        textColor = 'text-sky-700';
+        iconPath = 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z';
+        break;
+      case 'inconclusive':
+        bgColor = 'bg-amber-50';
+        textColor = 'text-amber-700';
+        iconPath = 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z';
+        break;
     }
-    const sizeClass = large ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-0.5 text-xs'
-    const iconSizeClass = large ? 'w-5 h-5' : 'w-4 h-4'
-    return `<span class="inline-flex items-center rounded-full font-medium ${bgColor} ${textColor} ${sizeClass}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mr-1.5 ${iconSizeClass}"><use href="#${IconId}" /></svg>${
-      status.charAt(0).toUpperCase() + status.slice(1)
-    }</span>`
-  }
 
-  const renderClaimDetail = claimData => {
+    const sizeClass = large ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-0.5 text-xs';
+    const iconSizeClass = large ? 'w-5 h-5' : 'w-4 h-4';
+    
+    return `<span class="inline-flex items-center rounded-full font-medium ${bgColor} ${textColor} ${sizeClass}">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="${iconSizeClass} mr-1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="${iconPath}" />
+      </svg>
+      ${status.charAt(0).toUpperCase() + status.slice(1)}
+    </span>`;
+  };
+
+  const renderClaimDetail = (claimData) => {
     if (!claimData) {
-      // Handle case where claimData might be null if not found
-      errorMessageTextEl.textContent = 'Claim details not found.'
-      claimDetailLoadingEl.classList.add('hidden')
-      claimDetailErrorEl.classList.remove('hidden')
-      claimDetailContentWrapperEl.classList.add('hidden')
-      return
+      errorMessageTextEl.textContent = 'Claim details not found.';
+      claimDetailLoadingEl.classList.add('hidden');
+      claimDetailErrorEl.classList.remove('hidden');
+      claimDetailContentWrapperEl.classList.add('hidden');
+      return;
     }
-    const formattedDate = new Date(
-      claimData.verificationDate
-    ).toLocaleDateString('en-US', {
+
+    // Safely parse date
+    const verificationDate = claimData.verificationDate ? new Date(claimData.verificationDate) : new Date();
+    const formattedDate = verificationDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    })
-    let evidenceHTML = ''
-    if (claimData.evidenceLinks && claimData.evidenceLinks.length > 0) {
-      evidenceHTML = `<section><div class="flex items-center mb-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-sky-600 mr-2"><use href="#paperclip-icon-solid" /></svg><h2 class="text-xl font-semibold text-slate-800">Supporting Evidence</h2></div><ul class="space-y-2">${claimData.evidenceLinks
-        .map(
-          link =>
-            `<li><a href="${link.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm text-sky-600 hover:text-sky-800 hover:underline group"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1.5 opacity-70 group-hover:opacity-100"><use href="#link-icon-solid" /></svg>${link.title}</a></li>`
-        )
-        .join('')}</ul></section>`
+    });
+
+    // Build evidence links section
+    let evidenceHTML = '';
+    if (claimData.evidenceLinks?.length > 0) {
+      evidenceHTML = `
+        <section>
+          <div class="flex items-center mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-sky-600 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+            </svg>
+            <h2 class="text-xl font-semibold text-slate-800">Supporting Evidence</h2>
+          </div>
+          <ul class="space-y-2">
+            ${claimData.evidenceLinks.map(link => `
+              <li>
+                <a href="${link.url || '#'}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm text-sky-600 hover:text-sky-800 hover:underline group">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1.5 opacity-70 group-hover:opacity-100">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                  </svg>
+                  ${link.url || 'Source link'}
+                </a>
+              </li>
+            `).join('')}
+          </ul>
+        </section>`;
     }
+
+    // Handle detailed explanation
     const paragraphsHTML = claimData.detailedExplanation
-      .split('\n')
-      .map(p => `<p>${p.trim() ? p : ' '}</p>`)
-      .join('') // Ensure empty lines are rendered as paragraphs
+      ?.split('\n')
+      ?.map(p => `<p>${p.trim() ? p : '&nbsp;'}</p>`)
+      ?.join('') || 'No detailed explanation available.';
 
     claimDetailContentWrapperEl.innerHTML = `
-                <div class="max-w-4xl mx-auto">
-                    <div class="mb-6">
-                        <a href="history-list.html" class="inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-800 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-sky-500 group-hover:text-sky-700 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
-                            Back to Verification History
-                        </a>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
-                        ${
-                          claimData.imageUrl
-                            ? `<div class="bg-slate-200"><img src="${claimData.imageUrl}" alt="Claim related image" class="w-full h-60 sm:h-80 md:h-96 object-contain p-2 bg-slate-50" /></div>`
-                            : ''
-                        }
-                        <div class="p-6 sm:p-8">
-                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5 pb-5 border-b border-slate-200">
-                                ${getStatusBadgeHTML(claimData.status, true)}
-                                <div class="flex items-center text-sm text-slate-500 mt-3 sm:mt-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-1.5 text-slate-400"><use href="#status-pending-icon-solid" /></svg>
-                                    Verified on: ${formattedDate}
-                                </div>
-                            </div>
-                            <section class="mb-8">
-                                <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Original Claim</h2>
-                                <p class="text-lg sm:text-xl text-slate-800 leading-relaxed whitespace-pre-wrap">${
-                                  claimData.claimText
-                                }</p>
-                                ${
-                                  claimData.originalSource
-                                    ? `<div class="mt-3 flex items-center text-sm text-slate-500"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1.5 text-slate-400"><use href="#link-icon-solid" /></svg>Source: <span class="ml-1 font-medium text-slate-600 truncate">${claimData.originalSource}</span></div>`
-                                    : ''
-                                }
-                            </section>
-                            <section class="mb-8">
-                                <div class="flex items-center mb-3">
-                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-sky-600 mr-2"><use href="#chat-bubble-icon-solid" /></svg>
-                                    <h2 class="text-xl font-semibold text-slate-800">Verification Details</h2>
-                                </div>
-                                <div class="prose prose-sm sm:prose-base max-w-none text-slate-700 leading-relaxed">${paragraphsHTML}</div>
-                            </section>
-                            ${evidenceHTML}
-                        </div>
-                    </div>
-                </div>`
-    claimDetailLoadingEl.classList.add('hidden')
-    claimDetailErrorEl.classList.add('hidden')
-    claimDetailContentWrapperEl.classList.remove('hidden')
-  }
+      <div class="max-w-4xl mx-auto">
+        <div class="mb-6">
+          <a href="history-list.html" class="inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-800 group">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-sky-500 group-hover:text-sky-700 transition-colors">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Verification History
+          </a>
+        </div>
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+          ${claimData.imageUrl ? `
+            <div class="bg-slate-200">
+              <img src="${claimData.imageUrl}" alt="Claim related image" class="w-full h-60 sm:h-80 md:h-96 object-contain p-2 bg-slate-50" />
+            </div>` : ''
+          }
+          <div class="p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5 pb-5 border-b border-slate-200">
+              ${getStatusBadgeHTML(claimData.status, true)}
+              <div class="flex items-center text-sm text-slate-500 mt-3 sm:mt-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1.5 text-slate-400">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Verified on: ${formattedDate}
+              </div>
+            </div>
+            <section class="mb-8">
+              <h2 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Original Claim</h2>
+              <p class="text-lg sm:text-xl text-slate-800 leading-relaxed whitespace-pre-wrap">
+                ${claimData.claimText || 'No claim text available'}
+              </p>
+              ${claimData.originalSource ? `
+                <div class="mt-3 flex items-center text-sm text-slate-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1.5 text-slate-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                  </svg>
+                  Source: <span class="ml-1 font-medium text-slate-600 truncate">${claimData.originalSource}</span>
+                </div>` : ''
+              }
+            </section>
+            <section class="mb-8">
+              <div class="flex items-center mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-sky-600 mr-2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                </svg>
+                <h2 class="text-xl font-semibold text-slate-800">Verification Details</h2>
+              </div>
+              <div class="prose prose-sm sm:prose-base max-w-none text-slate-700 leading-relaxed">
+                ${paragraphsHTML}
+              </div>
+            </section>
+            ${evidenceHTML}
+          </div>
+        </div>
+      </div>
+    `;
+
+    claimDetailLoadingEl.classList.add('hidden');
+    claimDetailErrorEl.classList.add('hidden');
+    claimDetailContentWrapperEl.classList.remove('hidden');
+  };
 
   const fetchClaimDetail = async () => {
-    const params = new URLSearchParams(window.location.search)
-    const claimIdFromUrl = params.get('id')
+    const searchParams = new URL(window.location.href).searchParams;
+  	const claimIdFromUrl = searchParams.get('id');
 
-    claimDetailLoadingEl.classList.remove('hidden')
-    claimDetailErrorEl.classList.add('hidden')
-    claimDetailContentWrapperEl.classList.add('hidden')
+    claimDetailLoadingEl.classList.remove('hidden');
+    claimDetailErrorEl.classList.add('hidden');
+    claimDetailContentWrapperEl.classList.add('hidden');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 700)) // Simulate network delay
-
       if (!claimIdFromUrl) {
-        throw new Error('No Claim ID provided in the URL.')
+        throw new Error('No Claim ID provided in the URL.');
       }
 
-      const selectedClaim = allHistoryItems.find(
-        item => item.id === claimIdFromUrl
-      )
-
-      if (selectedClaim) {
-        renderClaimDetail(selectedClaim)
-      } else {
-        throw new Error(`Claim with ID "${claimIdFromUrl}" not found.`)
+      // 1. First fetch ALL claims from the API
+      const response = await fetch('https://verifact-backend.onrender.com/api/history');
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+      
+      const allClaims = await response.json();
+      
+      // 2. Find the specific claim by ID
+      const foundClaim = allClaims.find(claim => claim._id === claimIdFromUrl);
+      
+      if (!foundClaim) {
+        throw new Error(`Claim with ID "${claimIdFromUrl}" not found in the history.`);
       }
-    } catch (e) {
-      errorMessageTextEl.textContent =
-        e.message || 'Failed to load claim details.'
-      claimDetailLoadingEl.classList.add('hidden')
-      claimDetailErrorEl.classList.remove('hidden')
-      claimDetailContentWrapperEl.classList.add('hidden')
+
+      // 3. Transform the found claim data
+      const claimData = {
+        id: foundClaim._id,
+        claimText: foundClaim.inputText || 'No claim text available',
+        status: VERDICT_TO_STATUS[foundClaim.verdict] || 'pending',
+        verificationDate: foundClaim.lastVerified || new Date().toISOString(),
+        summary: foundClaim.summary || 'No summary available',
+        detailedExplanation: foundClaim.detailedAnalysis || 'No detailed analysis available.',
+        evidenceLinks: (foundClaim.sourcesUsed || []).map(src => ({
+          title: src.relevance || 'Source reference',
+          url: src.url || '#'
+        })),
+        originalSource: foundClaim.originalSource || null,
+        imageUrl: foundClaim.imageUrl || null
+      };
+
+      renderClaimDetail(claimData);
+    } catch (error) {
+      console.error('Error loading claim:', error);
+      errorMessageTextEl.textContent = error.message || 'Failed to load claim details.';
+      claimDetailLoadingEl.classList.add('hidden');
+      claimDetailErrorEl.classList.remove('hidden');
     }
-  }
+  };
 
-  fetchClaimDetail()
+  // Initialize
+  fetchClaimDetail();
 })
