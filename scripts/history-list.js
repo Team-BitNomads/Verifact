@@ -83,20 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  const toggleDesktopSidebar = forceCollapseState => {
-    /* ... (sidebar collapse logic from history-detail) ... */
-    const shouldBeCollapsed =
-      typeof forceCollapseState === 'boolean'
-        ? forceCollapseState
-        : !isSidebarCollapsed
-    if (
-      isSidebarCollapsed === shouldBeCollapsed &&
-      typeof forceCollapseState !== 'boolean'
-    )
-      return
-    isSidebarCollapsed = shouldBeCollapsed
+
+  // Collapse/Expand ---
+  const toggleDesktopSidebar = () => {
+    isSidebarCollapsed = !isSidebarCollapsed
     sidebar.classList.toggle('w-64', !isSidebarCollapsed)
     sidebar.classList.toggle('w-20', isSidebarCollapsed)
+
     sidebarCollapseIcon.classList.toggle('hidden', isSidebarCollapsed)
     sidebarExpandIcon.classList.toggle('hidden', !isSidebarCollapsed)
     desktopSidebarToggleButton.setAttribute(
@@ -108,15 +101,18 @@ document.addEventListener('DOMContentLoaded', () => {
       : 'Collapse sidebar'
     desktopSidebarToggleButton.querySelector('span.sr-only').textContent =
       isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
+
     sidebarTextElements.forEach(el => {
       el.classList.toggle('opacity-0', isSidebarCollapsed)
       el.classList.toggle('h-0', isSidebarCollapsed)
       el.classList.toggle('overflow-hidden', isSidebarCollapsed)
       el.classList.toggle('opacity-100', !isSidebarCollapsed)
       el.classList.toggle('h-auto', !isSidebarCollapsed)
-      if (el.tagName === 'H3')
+      if (el.tagName === 'H3') {
         el.setAttribute('aria-hidden', isSidebarCollapsed)
+      }
     })
+
     sidebarNavItems.forEach(item => {
       item.classList.toggle('px-3', isSidebarCollapsed)
       item.classList.toggle('justify-center', isSidebarCollapsed)
