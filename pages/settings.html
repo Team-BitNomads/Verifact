@@ -11,23 +11,22 @@
 
     <style>
       ::-webkit-scrollbar { width: 8px; height: 8px; }
-      ::-webkit-scrollbar-track { background: #f8fafc; } /* slate-50 */
-      ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; } /* slate-400 */
-      ::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+      ::-webkit-scrollbar-track { background: #f8fafc; }
+      ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #64748b; }
       body { font-family: 'Inter', 'Noto Sans', sans-serif; }
     </style>
 </head>
 <body class="font-['Inter','Noto_Sans',sans-serif] antialiased">
 
 <div class="flex flex-col h-screen overflow-hidden bg-slate-100 dark:bg-slate-900">
-    <!-- Main Dashboard Header (Consistent) -->
     <header class="flex-shrink-0 h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 sm:px-6 z-30">
         <div class="flex items-center">
             <button type="button" id="mobile-sidebar-toggle" class="lg:hidden -ml-1.5 mr-3 p-2 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500" aria-controls="sidebar" aria-expanded="false" title="Open sidebar menu" aria-label="Open sidebar menu">
                 <span class="sr-only">Open sidebar</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6"><use href="#bars3-icon-path" /></svg>
             </button>
-            <a href="index.html" class="flex items-center gap-2 group">
+            <a href="../index.html" class="flex items-center gap-2 group">
                 <img class="h-8 w-auto" src="../assets/verifact-logo.png" alt="Verifact Logo" />
                 <span class="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors hidden sm:inline">Verifact</span>
             </a>
@@ -40,17 +39,15 @@
             <div id="user-menu-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-slate-700 ring-1 ring-black dark:ring-slate-600 ring-opacity-5 py-1 z-40">
                 <ul>
                     <li><a href="profile.html" class="user-menu-item block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">User Profile</a></li>
-                    <li><a href="logout.html" class="user-menu-item block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Logout</a></li>
+                    <li><a href="../index.html" class="user-menu-item block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Logout</a></li>
                 </ul>
             </div>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
-        <!-- Mobile overlay for Main Dashboard Sidebar -->
         <div id="mobile-sidebar-overlay" class="hidden fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"></div>
 
-        <!-- Main Dashboard Sidebar (Consistent) -->
         <div id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out -translate-x-full lg:relative lg:z-auto lg:translate-x-0 h-screen bg-gradient-to-br from-slate-50 to-white dark:from-slate-800 dark:to-slate-900 border-r border-slate-200/80 dark:border-slate-700/80 shadow-sm">
             <aside class="flex flex-col h-full w-full overflow-hidden">
                 <div class="flex items-center justify-end h-16 px-3 border-b border-slate-200/60 dark:border-slate-700/60 flex-shrink-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm">
@@ -93,7 +90,6 @@
             </aside>
         </div>
 
-        <!-- Main Content Area for Settings -->
         <main class="flex-1 overflow-y-auto bg-slate-100 dark:bg-slate-900">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <header class="mb-8 text-center">
@@ -104,7 +100,6 @@
                 <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                     <aside class="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
                         <nav id="settings-sub-navigation" class="space-y-1">
-                            <!-- Settings sub-navigation items will be injected here -->
                         </nav>
                         <div class="mt-8 pt-6 border-t border-slate-200/80 dark:border-slate-700/80">
                             <a href="logout.html" class="w-full flex items-center px-3 py-2.5 text-left rounded-lg text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors">
@@ -115,7 +110,6 @@
                     </aside>
 
                     <div id="settings-content-area" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
-                        <!-- Active setting section content will be rendered here -->
                     </div>
                 </div>
                  <div id="settings-save-button-container" class="mt-8 flex justify-end hidden">
@@ -129,7 +123,7 @@
     </div>
 </div>
     
-    <svg class="hidden"> <defs> <!-- ALL ICON DEFS FROM PREVIOUS SETTINGS PAGE GO HERE -->
+    <svg class="hidden"> <defs>
         <path id="bars3-icon-path" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         <path id="user-solid-icon-path" fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
         <path id="chevron-double-left-icon-path" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />

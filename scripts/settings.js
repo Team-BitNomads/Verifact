@@ -220,12 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
   )
   const settingsSaveButton = document.getElementById('settings-save-button')
 
-  // Initial Form Data (could also be loaded from localStorage or an API)
+
   const initialFormData = {
-    fullName: 'John Doe',
-    email: 'john.doe@example.com',
-    username: 'johndoe',
-    bio: 'Fact-checking enthusiast and researcher',
+    fullName: 'Bola Ahmed Tinubu',
+    email: 'officialBAT@gmail.com',
+    username: 'abat',
+    bio: 'Journalist||Research Lead, CJID.',
     emailNotifications: true,
     pushNotifications: true,
     weeklyDigest: false,
