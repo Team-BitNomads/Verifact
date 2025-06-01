@@ -1,3 +1,22 @@
+function truncateUrl(url) {
+	  const screenWidth = window.innerWidth;
+	  let maxLength;
+	
+	  if (screenWidth >= 1024) {
+	    maxLength = 70;
+	  } else if (screenWidth >= 768) {
+	    maxLength = 40;
+	  } else if (screenWidth >= 440) {
+	    maxLength = 25;
+	  } else {
+	    maxLength = 15;
+	  }
+	
+	  if (url.length <= maxLength) return url;
+	
+	  return url.slice(0, maxLength) + '…';
+	}
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- Global Elements ---
   const sidebar = document.getElementById('sidebar')
@@ -178,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     desktopSidebarToggleButton.addEventListener('click', toggleDesktopSidebar)
   }
 
-  // --- AppContent (Chat) Logic ---
+    // --- AppContent (Chat) Logic ---
 	const appContentWrapper = document.getElementById('app-content-wrapper')
 	const chatContainer = document.getElementById('chat-container')
 	const welcomeScreen = document.getElementById('welcome-screen')
@@ -195,7 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	const imagePreviewName = document.getElementById('image-preview-name')
 	const removeImageButton = document.getElementById('remove-image-button')
 	const suggestionButtons = document.querySelectorAll('.suggestion-button')
-	
+
+	// Chat Retrieval Logic
+	const storedMessages = JSON.parse(localStorage.getItem('storedMessages')) || [];
+	console.log(storedMessages)
+
 	let messages = []
 	let hasStartedChat = false
 	let selectedImageFile = null
@@ -258,18 +281,16 @@ document.addEventListener('DOMContentLoaded', () => {
 	  }
 	}
 	
-	// Helper to format date as "Last verified: Sep 2023"
 	const formatLastVerified = dateString => {
 	  if (!dateString) return ''
 	  const date = new Date(dateString)
 	  return `Last verified: ${date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
 	}
 	
-	// Updated renderMessage function with sources accordion
 	const renderMessage = msg => {
 	  const messageElement = document.createElement('div')
 	  messageElement.classList.add('animate-fade-in-up')
-	  const timeString = msg.timestamp.toLocaleTimeString([], {
+	  const timeString = new Date(msg.timestamp).toLocaleTimeString([], {
 	    hour: '2-digit',
 	    minute: '2-digit'
 	  })
@@ -277,26 +298,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	  if (msg.sender === 'user') {
 	    messageElement.className = 'flex justify-end ml-12 sm:ml-24 animate-fade-in-up'
 	    messageElement.innerHTML = `
-	      <div class="flex items-start gap-4 max-w-2xl">
-	        <div class="bg-gradient-to-r from-sky-500 to-blue-600 p-4 rounded-2xl rounded-br-md shadow-lg text-white">
+	      <div class="flex items-start gap-4 max-w-2xl sm:max-w-xs">
+	        <div class="bg-gradient-to-r from-sky-500 to-blue-600 p-4 rounded-2xl rounded-br-md shadow-lg text-white sm:p-3">
 	          ${
 	            msg.imageUrl
-	              ? `<div class="mb-3 rounded-lg overflow-hidden"><img src="${
+	              ? `<div class="mb-3 rounded-lg overflow-hidden sm:mb-2"><img src="${
 	                  msg.imageUrl
 	                }" alt="${
 	                  msg.imageName || 'Uploaded image'
-	                }" class="max-h-60 w-auto rounded-lg"/></div>`
+	                }" class="max-h-60 w-auto rounded-lg sm:max-h-40"/></div>`
 	              : ''
 	          }
 	          ${
 	            msg.text
-	              ? `<p class="whitespace-pre-wrap break-words leading-relaxed">${msg.text}</p>`
+	              ? `<p class="whitespace-pre-wrap break-words leading-relaxed sm:text-sm">${msg.text}</p>`
 	              : ''
 	          }
-	          <p class="text-xs mt-3 opacity-80 text-right">${timeString}</p>
+	          <p class="text-xs mt-3 opacity-80 text-right sm:mt-2">${timeString}</p>
 	        </div>
-	        <div class="bg-gradient-to-r from-sky-500 to-blue-600 p-2 rounded-full shadow-lg">
-	          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-white"><use href="#user-circle-icon-path" /></svg>
+	        <div class="bg-gradient-to-r from-sky-500 to-blue-600 p-2 rounded-full shadow-lg sm:p-1.5">
+	          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-white sm:h-6 sm:w-6"><use href="#user-circle-icon-path" /></svg>
 	        </div>
 	      </div>
 	    `
@@ -307,34 +328,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	    
 	    messageElement.className = 'flex justify-start mr-12 sm:mr-24 animate-fade-in-up'
 	    messageElement.innerHTML = `
-	      <div class="flex items-start gap-4 max-w-2xl">
-	        <div class="p-2 rounded-full shadow-lg ${styles.accent}">
-	          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-white"><use href="#cpu-chip-icon-path" /></svg>
+	      <div class="flex items-start gap-4 max-w-2xl sm:max-w-xs">
+	        <div class="p-2 rounded-full shadow-lg ${styles.accent} sm:p-1.5">
+	          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-white sm:h-6 sm:w-6"><use href="#cpu-chip-icon-path" /></svg>
 	        </div>
-	        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl rounded-bl-md shadow-xl border-l-4 border-0" style="border-left-color: ${
+	        <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl rounded-bl-md shadow-xl border-l-4 border-0 sm:p-4" style="border-left-color: ${
 	          styles.varColor
 	        };">
-	          <div class="mb-4 flex justify-between items-center">
+	          <div class="mb-4 flex-sm block justify-between items-center sm:flex-col sm:items-start sm:gap-2 sm:mb-3">
 	            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold ${
 	              styles.bgColor
 	            } ${styles.textColor} border ${
 	              styles.borderColor
-	            } shadow-sm">
-	              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2"><use href="#${
+	            } shadow-sm sm:px-3 sm:py-1 sm:text-xs">
+	              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 sm:w-3 sm:h-3 sm:mr-1"><use href="#${
 	                styles.Icon
 	              }" /></svg>
 	              ${styles.label}
 	            </span>
 	            ${
 	              lastVerifiedText
-	                ? `<span class="text-xs text-slate-500">${lastVerifiedText}</span>`
+	                ? `<span class="text-xs text-slate-500 mt-sm-0 mt-1 sm:text-[0.65rem]">${lastVerifiedText}</span>`
 	                : ''
 	            }
 	          </div>
 	          ${
 	            msg.originalQuery?.text || msg.originalQuery?.imageName
 	              ? `
-	          <div class="mb-4 p-3 bg-slate-50/80 rounded-xl text-sm text-slate-600 border border-slate-200/50">
+	          <div class="mb-4 p-3 bg-slate-50/80 rounded-xl text-sm text-slate-600 border border-slate-200/50 sm:p-2 sm:text-xs">
 	            <span class="font-medium text-slate-700">Regarding your query:</span>
 	            ${
 	              msg.originalQuery.text
@@ -349,48 +370,48 @@ document.addEventListener('DOMContentLoaded', () => {
 	          </div>`
 	              : ''
 	          }
-	          <div class="mb-4">
+	          <div class="mb-4 sm:mb-3">
 	            <h4 class="font-bold ${
 	              styles.textColor
-	            } mb-2 text-lg">Summary</h4>
-	            <p class="text-slate-700 whitespace-pre-wrap break-words leading-relaxed">${
+	            } mb-2 text-lg sm:text-base">Summary</h4>
+	            <p class="text-slate-700 whitespace-pre-wrap break-words leading-relaxed sm:text-sm">${
 	              msg.summary
 	            }</p>
 	          </div>
-	          <div class="mb-4">
+	          <div class="mb-4 sm:mb-3">
 	            <h4 class="font-bold ${
 	              styles.textColor
-	            } mb-2 text-lg">Details</h4>
-	            <div class="prose prose-slate max-w-none text-slate-600">
+	            } mb-2 text-lg sm:text-base">Details</h4>
+	            <div class="prose prose-slate max-w-none text-slate-600 sm:text-sm">
 	              ${msg.details
 	                .split('\n')
 	                .filter(p => p.trim())
-	                .map(p => `<p class="mb-3 leading-relaxed">${p}</p>`)
+	                .map(p => `<p class="mb-3 leading-relaxed sm:mb-2">${p}</p>`)
 	                .join('')}
 	            </div>
 	          </div>
 	          ${
 	            msg.sources?.length > 0
 	              ? `
-	          <div class="mt-4">
-	            <h4 class="font-bold ${styles.textColor} mb-2 text-lg">Sources</h4>
-	            <div class="space-y-2">
+	          <div class="mt-4 sm:mt-3">
+	            <h4 class="font-bold ${styles.textColor} mb-2 text-lg sm:text-base">Sources</h4>
+	            <div class="space-y-2 sm:space-y-1.5">
 	              ${msg.sources.map(src => `
 	                <details class="group border border-slate-200 rounded-lg overflow-hidden">
-	                  <summary class="flex justify-between items-center p-3 cursor-pointer bg-slate-50">
-	                    <span class="text-sm font-medium text-slate-700 truncate">${src.url}</span>
-	                    <svg class="h-5 w-5 text-slate-400 group-open:rotate-180 transform transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+	                  <summary class="flex justify-between items-center p-3 cursor-pointer bg-slate-50 max-w-full overflow-hidden sm:p-2">
+	                    <span class="block text-sm font-medium text-slate-700 truncate break-all sm:break-normal max-w-[calc(100%-2rem)] sm:text-xs" title="${src.url}">${truncateUrl(src.url)}</span>
+	                    <svg class="h-5 w-5 text-slate-400 group-open:rotate-180 transform transition sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 	                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
 	                    </svg>
 	                  </summary>
-	                  <div class="p-3 pt-0 text-sm space-y-1">
+	                  <div class="p-3 pt-0 text-sm space-y-1 sm:p-2 sm:text-xs">
 	                    <div class="flex justify-between">
 	                      <span class="text-slate-600">Relevance:</span>
 	                      <span class="font-medium">${src.relevance || 'Unknown'}</span>
 	                    </div>
 	                    <div class="flex justify-between">
 	                      <span class="text-slate-600">Published:</span>
-	                      <span>${src.publicationDate || 'Date not available'}</span>
+	                      <span>${src.publicationDate || 'No date available'}</span>
 	                    </div>
 	                  </div>
 	                </details>
@@ -399,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	          </div>`
 	              : ''
 	          }
-	          <p class="text-xs mt-4 pt-3 border-t border-slate-200/50 text-slate-500">${timeString}</p>
+	          <p class="text-xs mt-4 pt-3 border-t border-slate-200/50 text-slate-500 sm:mt-3 sm:pt-2">${timeString}</p>
 	        </div>
 	      </div>
 	    `
@@ -410,6 +431,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	  } else {
 	    chatContainer.appendChild(messageElement)
 	  }
+	}
+
+	if (storedMessages.length != 0){
+		if (!hasStartedChat) {
+		  hasStartedChat = true
+		  if (welcomeScreen) welcomeScreen.classList.add('hidden')
+		}
+	
+		storedMessages.forEach(newMessage => {
+		  renderMessage(newMessage)
+		});
+
+		messages = storedMessages;
 	}
 	
 	// Helper function to handle API errors
@@ -456,8 +490,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	  }
 	}
 
-	// --- Existing helper functions from Part 1 remain here ---
-
 	const scrollToBottom = () => {
 	  if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight
 	}
@@ -503,44 +535,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	    )
 	  }
 	}
-	
-	// New API call function
-	// const callVerifactAPI = async (text, imageFile) => {
-	//   const API_ENDPOINT = 'https://verifact-backend.onrender.com/api/verify';
-	  
-	//   try {
-	//     const formData = new FormData();
-	//     formData.append('text', text || ' ');
-	    
-	//     if (imageFile) {
-	//       formData.append('image', imageFile, `img_${Date.now()}.${imageFile.name.split('.').pop()}`);
-	//     }
-	
-	//     // Critical CORS configuration
-	//     const response = await fetch(API_ENDPOINT, {
-	//       method: 'POST',
-	//       body: formData,
-	//       mode: 'cors', // Explicitly enable CORS
-	//       headers: {
-	//         'Accept': 'application/json' // Ensure backend knows we want JSON
-	//       }
-	//     });
-	
-	//     if (!response.ok) {
-	//       const error = await response.text();
-	//       throw new Error(`Server error: ${response.status} - ${error}`);
-	//     }
-	
-	//     return await response.json();
-	//   } catch (error) {
-	//     console.error('Upload failed:', {
-	//       errorName: error.name,
-	//       message: error.message,
-	//       suggestion: 'Ensure backend CORS headers allow your origin'
-	//     });
-	//     throw error;
-	//   }
-	// };
 
 	const callVerifactAPI = async (text, imageFile) => {
 	  const API_ENDPOINT = 'https://verifact-backend.onrender.com/api/verify';
@@ -553,7 +547,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	    const response = await fetch(API_ENDPOINT, {
 	      method: 'POST',
 	      body: formData
-	      // No custom headers or CORS mode - let browser handle it
 	    });
 	
 	    if (!response.ok) {
@@ -596,6 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	  // Store current inputs before clearing
 	  const currentInputText = inputTextValue
 	  const currentSelectedImageName = selectedImageFile?.name
+	  const currentImageFile = selectedImageFile;
 	
 	  // Clear inputs
 	  chatInputTextarea.value = ''
@@ -617,14 +611,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	    // Make API call
 	    const apiResponse = await callVerifactAPI(
 	      currentInputText,
-	      selectedImageFile
+	      currentImageFile
 	    )
-	
 	    // Transform API response to chat message format
 	    const verifactResponse = {
 	      id: apiResponse.id || crypto.randomUUID(),
 	      sender: 'verifact',
-	      status: apiResponse.verdict, // Will be normalized in getStatusStyles
+	      status: apiResponse.verdict,
 	      summary: apiResponse.summary,
 	      details: apiResponse.detailedAnalysis,
 	      originalQuery: {
@@ -638,14 +631,20 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	    messages.push(verifactResponse)
 	    renderMessage(verifactResponse)
+		localStorage.setItem('storedMessages', JSON.stringify(messages));
 	  } catch (error) {
-	    // Show error message with retry option
 	    showError(
 	      error.message || 'Failed to verify your query. Please try again.',
 	      () => {
 	        // Retry logic
-	        chatContainer.removeChild(chatContainer.lastChild) // Remove error message
-	        handleSubmit() // Retry original submission
+	        chatContainer.removeChild(chatContainer.lastChild) 
+	        handleSubmit() 
+	  		isLoading = true
+			updateSendButtonState()
+			chatInputTextarea.disabled = true
+			uploadImageButton.disabled = true
+			if (loadingIndicator) loadingIndicator.classList.remove('hidden')
+			scrollToBottom()
 	      }
 	    )
 	  } finally {
