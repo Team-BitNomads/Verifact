@@ -12,19 +12,19 @@
       html {
         scroll-behavior: smooth;
       }
-      /* For the HowItWorks connecting line */
+     
       .desktop-connecting-line::before {
         content: '';
         position: absolute;
-        top: 2rem; /* Matches the icon container's top position roughly */
-        left: calc(16.66% + 2rem); /* (100% / 3 sections / 2) + icon width / 2 approx */
+        top: 2rem; 
+        left: calc(16.66% + 2rem); 
         right: calc(16.66% + 2rem);
-        height: 2px; /* 0.5 * 4px = 2px for h-0.5 */
-        background-color: #cbd5e1; /* slate-300 */
+        height: 2px; 
+        background-color: #cbd5e1; 
         opacity: 0.7;
-        z-index: 0; /* Behind the icons */
+        z-index: 0; 
       }
-      @media (max-width: 767px) { /* md breakpoint */
+      @media (max-width: 767px) { 
         .desktop-connecting-line::before {
           display: none;
         }
@@ -53,7 +53,7 @@
                         <a href="#how-it-works" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
                         <a href="#reason" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Why Us?</a>
                         <a href="#contact" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Contact</a>
-                        <a href="#" data-id="clearer" class="chat-nav-link inline-flex items-center justify-center rounded-lg h-10 px-5 bg-blue-600 text-white font-semibold text-sm shadow-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <a href="./pages/chat.html" data-id="clearer" class="chat-nav-link inline-flex items-center justify-center rounded-lg h-10 px-5 bg-blue-600 text-white font-semibold text-sm shadow-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             Get Started
                         </a>
                     </nav>
