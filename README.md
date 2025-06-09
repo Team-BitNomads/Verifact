@@ -1,6 +1,6 @@
 # 🧠 Verifact
 
-> **AI-Powered News Verification Platform**
+> **AI-Powered Rumour Verification Tool**
 
 Verifact is an intelligent web platform built to help users verify the authenticity of news and claims using artificial intelligence. Designed with a clean UI and powered by modern technologies, Verifact empowers people to fight misinformation with ease, speed, and accuracy.
 
